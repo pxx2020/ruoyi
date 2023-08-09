@@ -74,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentBirthday != null">student_birthday = #{studentBirthday},</if>
             <if test="studentPhone != null">student_phone = #{studentPhone},</if>
             <if test="studentAddress != null">student_address = #{studentAddress},</if>
+
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>

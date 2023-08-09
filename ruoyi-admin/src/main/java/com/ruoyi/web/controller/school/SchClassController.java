@@ -1,4 +1,4 @@
-package com.ruoyi.school.controller;
+package com.ruoyi.web.controller.school;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +28,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2023-08-09
  */
 @RestController
-@RequestMapping("/classes/classes")
+@RequestMapping("/school/classes")
 public class SchClassController extends BaseController
 {
     @Autowired
@@ -37,7 +37,7 @@ public class SchClassController extends BaseController
     /**
      * 查询学生班级列表
      */
-    @PreAuthorize("@ss.hasPermi('classes:classes:list')")
+    @PreAuthorize("@ss.hasPermi('school:classes:list')")
     @GetMapping("/list")
     public TableDataInfo list(SchClass schClass)
     {
@@ -49,7 +49,7 @@ public class SchClassController extends BaseController
     /**
      * 导出学生班级列表
      */
-    @PreAuthorize("@ss.hasPermi('classes:classes:export')")
+    @PreAuthorize("@ss.hasPermi('school:classes:export')")
     @Log(title = "学生班级", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, SchClass schClass)
@@ -62,7 +62,7 @@ public class SchClassController extends BaseController
     /**
      * 获取学生班级详细信息
      */
-    @PreAuthorize("@ss.hasPermi('classes:classes:query')")
+    @PreAuthorize("@ss.hasPermi('school:classes:query')")
     @GetMapping(value = "/{classId}")
     public AjaxResult getInfo(@PathVariable("classId") Long classId)
     {
@@ -72,7 +72,7 @@ public class SchClassController extends BaseController
     /**
      * 新增学生班级
      */
-    @PreAuthorize("@ss.hasPermi('classes:classes:add')")
+    @PreAuthorize("@ss.hasPermi('school:classes:add')")
     @Log(title = "学生班级", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SchClass schClass)
@@ -83,7 +83,7 @@ public class SchClassController extends BaseController
     /**
      * 修改学生班级
      */
-    @PreAuthorize("@ss.hasPermi('classes:classes:edit')")
+    @PreAuthorize("@ss.hasPermi('school:classes:edit')")
     @Log(title = "学生班级", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SchClass schClass)
@@ -94,7 +94,7 @@ public class SchClassController extends BaseController
     /**
      * 删除学生班级
      */
-    @PreAuthorize("@ss.hasPermi('classes:classes:remove')")
+    @PreAuthorize("@ss.hasPermi('school:classes:remove')")
     @Log(title = "学生班级", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{classIds}")
     public AjaxResult remove(@PathVariable Long[] classIds)

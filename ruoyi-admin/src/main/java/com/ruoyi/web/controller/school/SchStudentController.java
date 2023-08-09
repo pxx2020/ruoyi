@@ -1,4 +1,4 @@
-package com.ruoyi.school.controller;
+package com.ruoyi.web.controller.school;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
