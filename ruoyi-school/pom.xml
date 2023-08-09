@@ -11,5 +11,10 @@
 
     <artifactId>ruoyi-custom</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common</artifactId>
+        </dependency>
+    </dependencies>
 </project>
