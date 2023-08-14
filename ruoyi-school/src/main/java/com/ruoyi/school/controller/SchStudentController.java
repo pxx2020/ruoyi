@@ -25,7 +25,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 学生信息Controller
  * 
  * @author ruoyi
- * @date 2023-08-07
+ * @date 2023-08-09
  */
 @RestController
 @RequestMapping("/school/student")
