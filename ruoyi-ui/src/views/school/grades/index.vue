@@ -1,18 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="班级名称" prop="className">
+      <el-form-item label="年级名称" prop="gradeName">
         <el-input
-          v-model="queryParams.className"
-          placeholder="请输入班级名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="班级容量" prop="capacity">
-        <el-input
-          v-model="queryParams.capacity"
-          placeholder="请输入班级容量"
+          v-model="queryParams.gradeName"
+          placeholder="请输入年级名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -31,7 +23,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['school:classes:add']"
+          v-hasPermi="['school:grades:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -42,7 +34,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['school:classes:edit']"
+          v-hasPermi="['school:grades:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -53,7 +45,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['school:classes:remove']"
+          v-hasPermi="['school:grades:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -63,19 +55,16 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['school:classes:export']"
+          v-hasPermi="['school:grades:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="classesList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="gradesList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="班级ID" align="center" prop="classId" />
-      <el-table-column label="年级ID" align="center" prop="gradesId" />
-      <el-table-column label="班级名称" align="center" prop="className" />
-      <el-table-column label="班级容量" align="center" prop="capacity" />
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="年级id" align="center" prop="gradeId" />
+      <el-table-column label="年级名称" align="center" prop="gradeName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -83,14 +72,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['school:classes:edit']"
+            v-hasPermi="['school:grades:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['school:classes:remove']"
+            v-hasPermi="['school:grades:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -104,14 +93,11 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改学生班级对话框 -->
+    <!-- 添加或修改学生年级对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="班级名称" prop="className">
-          <el-input v-model="form.className" placeholder="请输入班级名称" />
-        </el-form-item>
-        <el-form-item label="班级容量" prop="capacity">
-          <el-input v-model="form.capacity" placeholder="请输入班级容量" />
+        <el-form-item label="年级名称" prop="gradeName">
+          <el-input v-model="form.gradeName" placeholder="请输入年级名称" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
@@ -126,10 +112,10 @@
 </template>
 
 <script>
-import { listClasses, getClasses, delClasses, addClasses, updateClasses } from "@/api/school/classes";
+import { listGrades, getGrades, delGrades, addGrades, updateGrades } from "@/api/school/grades";
 
 export default {
-  name: "Classes",
+  name: "Grades",
   data() {
     return {
       // 遮罩层
@@ -144,8 +130,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 学生班级表格数据
-      classesList: [],
+      // 学生年级表格数据
+      gradesList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -154,20 +140,12 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        gradesId: null,
-        className: null,
-        capacity: null,
+        gradeName: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        gradesId: [
-          { required: true, message: "年级ID不能为空", trigger: "change" }
-        ],
-        className: [
-          { required: true, message: "班级名称不能为空", trigger: "blur" }
-        ],
       }
     };
   },
@@ -175,11 +153,11 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询学生班级列表 */
+    /** 查询学生年级列表 */
     getList() {
       this.loading = true;
-      listClasses(this.queryParams).then(response => {
-        this.classesList = response.rows;
+      listGrades(this.queryParams).then(response => {
+        this.gradesList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -192,10 +170,8 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        classId: null,
-        gradesId: null,
-        className: null,
-        capacity: null,
+        gradeId: null,
+        gradeName: null,
         createBy: null,
         createTime: null,
         updateBy: null,
@@ -216,7 +192,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.classId)
+      this.ids = selection.map(item => item.gradeId)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -224,30 +200,30 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加学生班级";
+      this.title = "添加年级";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const classId = row.classId || this.ids
-      getClasses(classId).then(response => {
+      const gradeId = row.gradeId || this.ids
+      getGrades(gradeId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改学生班级";
+        this.title = "修改年级";
       });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.classId != null) {
-            updateClasses(this.form).then(response => {
+          if (this.form.gradeId != null) {
+            updateGrades(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addClasses(this.form).then(response => {
+            addGrades(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -258,9 +234,9 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const classIds = row.classId || this.ids;
-      this.$modal.confirm('是否确认删除学生班级编号为"' + classIds + '"的数据项？').then(function() {
-        return delClasses(classIds);
+      const gradeIds = row.gradeId || this.ids;
+      this.$modal.confirm('是否确认删除年级编号为"' + gradeIds + '"的数据项？').then(function() {
+        return delGrades(gradeIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -268,9 +244,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('school/classes/export', {
+      this.download('school/grades/export', {
         ...this.queryParams
-      }, `classes_${new Date().getTime()}.xlsx`)
+      }, `grades_${new Date().getTime()}.xlsx`)
     }
   }
 };

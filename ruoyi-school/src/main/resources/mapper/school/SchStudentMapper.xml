@@ -4,38 +4,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.school.mapper.SchStudentMapper">
     
-    <resultMap type="SchStudent" id="SchStudentResult">
+    <resultMap type="SchStudentVo" id="SchStudentResult">
         <result property="studentId"    column="student_id"    />
         <result property="studentName"    column="student_name"    />
         <result property="studentSex"    column="student_sex"    />
         <result property="studentBirthday"    column="student_birthday"    />
         <result property="studentPhone"    column="student_phone"    />
         <result property="studentAddress"    column="student_address"    />
+        <result property="classId"    column="class_id"    />
+        <result property="className"    column="class_name"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
+        <association property="schClass" javaType="schClass" resultMap="com.ruoyi.school.mapper.SchClassMapper.SchClassResult"></association>
     </resultMap>
 
     <sql id="selectSchStudentVo">
-        select student_id, student_name, student_sex, student_birthday, student_phone, student_address, create_by, create_time, update_by, update_time, remark from sch_student
+        select ss.*,sc.class_name from sch_student ss LEFT JOIN sch_class sc ON ss.class_id = sc.class_id
     </sql>
 
     <select id="selectSchStudentList" parameterType="SchStudent" resultMap="SchStudentResult">
         <include refid="selectSchStudentVo"/>
         <where>  
-            <if test="studentName != null  and studentName != ''"> and student_name like concat('%', #{studentName}, '%')</if>
-            <if test="studentSex != null  and studentSex != ''"> and student_sex = #{studentSex}</if>
-            <if test="studentBirthday != null "> and student_birthday = #{studentBirthday}</if>
-            <if test="studentPhone != null  and studentPhone != ''"> and student_phone = #{studentPhone}</if>
-            <if test="studentAddress != null  and studentAddress != ''"> and student_address = #{studentAddress}</if>
+            <if test="studentName != null  and studentName != ''"> and ss.student_name like concat('%', #{studentName}, '%')</if>
+            <if test="studentSex != null  and studentSex != ''"> and ss.student_sex = #{studentSex}</if>
+            <if test="studentBirthday != null "> and ss.student_birthday = #{studentBirthday}</if>
+            <if test="studentPhone != null  and studentPhone != ''"> and ss.student_phone = #{studentPhone}</if>
+            <if test="studentAddress != null  and studentAddress != ''"> and ss.student_address = #{studentAddress}</if>
+            <if test="classId != null "> and ss.class_id = #{classId}</if>
+            <if test="schClass != null and schClass.className != null and schClass.className != ''"> and sc.class_name like concat('%', #{schClass.className}, '%')</if>
         </where>
+    </select>
+
+    <select id="selectSchStudentListDto" parameterType="SchStudentDto" resultMap="SchStudentResult">
+        <include refid="selectSchStudentVo"/>
+        <where>
+            <if test="studentName != null  and studentName != ''"> and ss.student_name like concat('%', #{studentName}, '%')</if>
+            <if test="studentSex != null  and studentSex != ''"> and ss.student_sex = #{studentSex}</if>
+            <if test="studentBirthday != null "> and ss.student_birthday = #{studentBirthday}</if>
+            <if test="studentPhone != null  and studentPhone != ''"> and ss.student_phone = #{studentPhone}</if>
+            <if test="studentAddress != null  and studentAddress != ''"> and ss.student_address = #{studentAddress}</if>
+            <if test="classId != null "> and ss.class_id = #{classId}</if>
+
+        </where>
+
     </select>
     
     <select id="selectSchStudentByStudentId" parameterType="Long" resultMap="SchStudentResult">
         <include refid="selectSchStudentVo"/>
-        where student_id = #{studentId}
+        where ss.student_id = #{studentId}
     </select>
         
     <insert id="insertSchStudent" parameterType="SchStudent" useGeneratedKeys="true" keyProperty="studentId">
@@ -46,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentBirthday != null">student_birthday,</if>
             <if test="studentPhone != null">student_phone,</if>
             <if test="studentAddress != null">student_address,</if>
+            <if test="classId != null">class_id,</if>
             <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
@@ -58,6 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentBirthday != null">#{studentBirthday},</if>
             <if test="studentPhone != null">#{studentPhone},</if>
             <if test="studentAddress != null">#{studentAddress},</if>
+            <if test="classId != null">#{classId},</if>
             <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
@@ -74,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentBirthday != null">student_birthday = #{studentBirthday},</if>
             <if test="studentPhone != null">student_phone = #{studentPhone},</if>
             <if test="studentAddress != null">student_address = #{studentAddress},</if>
-
+            <if test="classId != null">class_id = #{classId},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>

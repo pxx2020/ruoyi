@@ -43,6 +43,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="所在班级" prop="classId">
+        <el-select v-model="queryParams.classId" placeholder="选择班级">
+            <el-option
+              v-for="item in classesList"
+              :key="item.classId"
+              :label="item.className"
+              :value="item.classId"
+            ></el-option>
+          </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -111,6 +121,8 @@
       </el-table-column>
       <el-table-column label="联系电话" align="center" prop="studentPhone" />
       <el-table-column label="联系地址" align="center" prop="studentAddress" />
+      <el-table-column label="所在班级" align="center" prop="className" />
+      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -169,6 +181,9 @@
         <el-form-item label="联系地址" prop="studentAddress">
           <el-input v-model="form.studentAddress" placeholder="请输入联系地址" />
         </el-form-item>
+        <el-form-item label="所在班级" prop="classId">
+          <el-input v-model="form.classId" placeholder="请输入所在班级" />
+        </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
@@ -183,7 +198,7 @@
 
 <script>
 import { listStudent, getStudent, delStudent, addStudent, updateStudent } from "@/api/school/student";
-
+import { listClasses } from "@/api/school/classes";
 export default {
   name: "Student",
   dicts: ['sys_user_sex'],
@@ -203,6 +218,8 @@ export default {
       total: 0,
       // 学生信息表格数据
       studentList: [],
+      //班级列表
+      classesList:[],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -216,6 +233,10 @@ export default {
         studentBirthday: null,
         studentPhone: null,
         studentAddress: null,
+        classId: null,
+        // 'schClass.className':'计算机',
+
+        // className:'计算机'
       },
       // 表单参数
       form: {},
@@ -229,6 +250,10 @@ export default {
   },
   created() {
     this.getList();
+    listClasses({ pageNum: 1,pageSize: 999}).then(response => {
+        this.classesList = response.rows;
+        this.total = response.total;
+      });
   },
   methods: {
     /** 查询学生信息列表 */
@@ -254,6 +279,7 @@ export default {
         studentBirthday: null,
         studentPhone: null,
         studentAddress: null,
+        classId: null,
         createBy: null,
         createTime: null,
         updateBy: null,

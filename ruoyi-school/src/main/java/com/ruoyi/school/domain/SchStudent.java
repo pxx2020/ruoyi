@@ -11,7 +11,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 学生信息对象 sch_student
  * 
  * @author ruoyi
- * @date 2023-08-07
+ * @date 2023-08-09
  */
 public class SchStudent extends BaseEntity
 {
@@ -41,60 +41,73 @@ public class SchStudent extends BaseEntity
     @Excel(name = "联系地址")
     private String studentAddress;
 
+    /** 所在班级 */
+    @Excel(name = "所在班级")
+    private Long classId;
+
     public void setStudentId(Long studentId) 
     {
         this.studentId = studentId;
     }
-
     public Long getStudentId() 
     {
         return studentId;
     }
+
     public void setStudentName(String studentName) 
     {
         this.studentName = studentName;
     }
-
     public String getStudentName() 
     {
         return studentName;
     }
+
     public void setStudentSex(String studentSex) 
     {
         this.studentSex = studentSex;
     }
-
     public String getStudentSex() 
     {
         return studentSex;
     }
+
     public void setStudentBirthday(Date studentBirthday) 
     {
         this.studentBirthday = studentBirthday;
     }
-
     public Date getStudentBirthday() 
     {
         return studentBirthday;
     }
+
     public void setStudentPhone(String studentPhone) 
     {
         this.studentPhone = studentPhone;
     }
-
     public String getStudentPhone() 
     {
         return studentPhone;
     }
+
     public void setStudentAddress(String studentAddress) 
     {
         this.studentAddress = studentAddress;
     }
-
     public String getStudentAddress() 
     {
         return studentAddress;
     }
+
+    public void setClassId(Long classId) 
+    {
+        this.classId = classId;
+    }
+    public Long getClassId() 
+    {
+        return classId;
+    }
+
 
     @Override
     public String toString() {
@@ -105,6 +118,7 @@ public class SchStudent extends BaseEntity
             .append("studentBirthday", getStudentBirthday())
             .append("studentPhone", getStudentPhone())
             .append("studentAddress", getStudentAddress())
+            .append("classId", getClassId())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())

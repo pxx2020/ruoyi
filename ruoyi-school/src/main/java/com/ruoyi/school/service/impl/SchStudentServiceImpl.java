@@ -2,6 +2,8 @@ package com.ruoyi.school.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.school.domain.dto.SchStudentDto;
+import com.ruoyi.school.domain.vo.SchStudentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.school.mapper.SchStudentMapper;
@@ -42,6 +44,18 @@ public class SchStudentServiceImpl implements ISchStudentService
     public List<SchStudent> selectSchStudentList(SchStudent schStudent)
     {
         return schStudentMapper.selectSchStudentList(schStudent);
+    }
+
+    /**
+     * 查询学生信息列表
+     *
+     * @param schStudentDto 学生信息
+     * @return 学生信息
+     */
+    @Override
+    public List<SchStudentVo> selectSchStudentListDto(SchStudentDto schStudentDto)
+    {
+        return schStudentMapper.selectSchStudentListDto(schStudentDto);
     }
 
     /**

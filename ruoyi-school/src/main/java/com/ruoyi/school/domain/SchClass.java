@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 学生班级对象 sch_class
  * 
  * @author ruoyi
- * @date 2023-08-09
+ * @date 2023-08-14
  */
 public class SchClass extends BaseEntity
 {
@@ -18,13 +18,13 @@ public class SchClass extends BaseEntity
     /** 班级ID */
     private Long classId;
 
+    /** 年级ID */
+    @Excel(name = "年级ID")
+    private Long gradesId;
+
     /** 班级名称 */
     @Excel(name = "班级名称")
     private String className;
-
-    /** 班级任ID */
-    @Excel(name = "班级任ID")
-    private Long teacherId;
 
     /** 班级容量 */
     @Excel(name = "班级容量")
@@ -39,6 +39,15 @@ public class SchClass extends BaseEntity
     {
         return classId;
     }
+    public void setGradesId(Long gradesId) 
+    {
+        this.gradesId = gradesId;
+    }
+
+    public Long getGradesId() 
+    {
+        return gradesId;
+    }
     public void setClassName(String className) 
     {
         this.className = className;
@@ -47,15 +56,6 @@ public class SchClass extends BaseEntity
     public String getClassName() 
     {
         return className;
-    }
-    public void setTeacherId(Long teacherId) 
-    {
-        this.teacherId = teacherId;
-    }
-
-    public Long getTeacherId() 
-    {
-        return teacherId;
     }
     public void setCapacity(Long capacity) 
     {
@@ -71,8 +71,8 @@ public class SchClass extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("classId", getClassId())
+            .append("gradesId", getGradesId())
             .append("className", getClassName())
-            .append("teacherId", getTeacherId())
             .append("capacity", getCapacity())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())

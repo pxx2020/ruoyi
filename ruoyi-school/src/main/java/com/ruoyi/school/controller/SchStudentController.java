@@ -1,7 +1,10 @@
-package com.ruoyi.web.controller.school;
+package com.ruoyi.school.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.school.domain.dto.SchStudentDto;
+import com.ruoyi.school.domain.vo.SchStudentVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +42,10 @@ public class SchStudentController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('school:student:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SchStudent schStudent)
+    public TableDataInfo list(SchStudentDto schStudentDto)
     {
         startPage();
-        List<SchStudent> list = schStudentService.selectSchStudentList(schStudent);
+        List<SchStudentVo> list = schStudentService.selectSchStudentListDto(schStudentDto);
         return getDataTable(list);
     }
 

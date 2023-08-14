@@ -2,6 +2,8 @@ package com.ruoyi.school.mapper;
 
 import java.util.List;
 import com.ruoyi.school.domain.SchStudent;
+import com.ruoyi.school.domain.dto.SchStudentDto;
+import com.ruoyi.school.domain.vo.SchStudentVo;
 
 /**
  * 学生信息Mapper接口
@@ -26,6 +28,14 @@ public interface SchStudentMapper
      * @return 学生信息集合
      */
     public List<SchStudent> selectSchStudentList(SchStudent schStudent);
+
+    /**
+     * 查询学生信息列表
+     *
+     * @param schStudentDto 学生信息
+     * @return 学生信息集合
+     */
+    public List<SchStudentVo> selectSchStudentListDto(SchStudentDto schStudentDto);
 
     /**
      * 新增学生信息
