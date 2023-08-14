@@ -7,7 +7,7 @@ import com.ruoyi.school.domain.SchClass;
  * 学生班级Service接口
  * 
  * @author ruoyi
- * @date 2023-08-09
+ * @date 2023-08-14
  */
 public interface ISchClassService 
 {

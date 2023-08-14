@@ -12,7 +12,7 @@ import com.ruoyi.school.service.ISchClassService;
  * 学生班级Service业务层处理
  * 
  * @author ruoyi
- * @date 2023-08-09
+ * @date 2023-08-14
  */
 @Service
 public class SchClassServiceImpl implements ISchClassService 

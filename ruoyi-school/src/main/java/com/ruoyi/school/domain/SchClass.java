@@ -18,9 +18,9 @@ public class SchClass extends BaseEntity
     /** 班级ID */
     private Long classId;
 
-    /** 年级ID */
-    @Excel(name = "年级ID")
-    private Long gradesId;
+    /** 年级 */
+    @Excel(name = "年级")
+    private Long gradeId;
 
     /** 班级名称 */
     @Excel(name = "班级名称")
@@ -39,14 +39,14 @@ public class SchClass extends BaseEntity
     {
         return classId;
     }
-    public void setGradesId(Long gradesId) 
+    public void setGradeId(Long gradeId) 
     {
-        this.gradesId = gradesId;
+        this.gradeId = gradeId;
     }
 
-    public Long getGradesId() 
+    public Long getGradeId() 
     {
-        return gradesId;
+        return gradeId;
     }
     public void setClassName(String className) 
     {
@@ -71,7 +71,7 @@ public class SchClass extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("classId", getClassId())
-            .append("gradesId", getGradesId())
+            .append("gradeId", getGradeId())
             .append("className", getClassName())
             .append("capacity", getCapacity())
             .append("createBy", getCreateBy())

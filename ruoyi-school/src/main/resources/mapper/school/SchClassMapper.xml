@@ -61,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateSchClass" parameterType="SchClass">
         update sch_class
         <trim prefix="SET" suffixOverrides=",">
-            <if test="gradeId != null">grades_id = #{gradesId},</if>
+            <if test="gradeId != null">grade_id = #{gradeId},</if>
             <if test="className != null and className != ''">class_name = #{className},</if>
             <if test="capacity != null">capacity = #{capacity},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
