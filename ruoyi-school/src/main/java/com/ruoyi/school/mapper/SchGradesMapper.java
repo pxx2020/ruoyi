@@ -4,7 +4,7 @@ import java.util.List;
 import com.ruoyi.school.domain.SchGrades;
 
 /**
- * 学生年级Mapper接口
+ * 班级年级Mapper接口
  * 
  * @author ruoyi
  * @date 2023-08-14
@@ -12,47 +12,47 @@ import com.ruoyi.school.domain.SchGrades;
 public interface SchGradesMapper 
 {
     /**
-     * 查询学生年级
+     * 查询班级年级
      * 
-     * @param gradeId 学生年级主键
-     * @return 学生年级
+     * @param gradeId 班级年级主键
+     * @return 班级年级
      */
     public SchGrades selectSchGradesByGradeId(Long gradeId);
 
     /**
-     * 查询学生年级列表
+     * 查询班级年级列表
      * 
-     * @param schGrades 学生年级
-     * @return 学生年级集合
+     * @param schGrades 班级年级
+     * @return 班级年级集合
      */
     public List<SchGrades> selectSchGradesList(SchGrades schGrades);
 
     /**
-     * 新增学生年级
+     * 新增班级年级
      * 
-     * @param schGrades 学生年级
+     * @param schGrades 班级年级
      * @return 结果
      */
     public int insertSchGrades(SchGrades schGrades);
 
     /**
-     * 修改学生年级
+     * 修改班级年级
      * 
-     * @param schGrades 学生年级
+     * @param schGrades 班级年级
      * @return 结果
      */
     public int updateSchGrades(SchGrades schGrades);
 
     /**
-     * 删除学生年级
+     * 删除班级年级
      * 
-     * @param gradeId 学生年级主键
+     * @param gradeId 班级年级主键
      * @return 结果
      */
     public int deleteSchGradesByGradeId(Long gradeId);
 
     /**
-     * 批量删除学生年级
+     * 批量删除班级年级
      * 
      * @param gradeIds 需要删除的数据主键集合
      * @return 结果

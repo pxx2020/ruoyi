@@ -29,7 +29,7 @@ public class SchStudentServiceImpl implements ISchStudentService
      * @return 学生信息
      */
     @Override
-    public SchStudent selectSchStudentByStudentId(Long studentId)
+    public SchStudentVo selectSchStudentByStudentId(Long studentId)
     {
         return schStudentMapper.selectSchStudentByStudentId(studentId);
     }

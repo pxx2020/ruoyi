@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.school.mapper.SchClassMapper">
     
-    <resultMap type="SchClass" id="SchClassResult">
+    <resultMap type="SchClassVo" id="SchClassResult">
         <result property="classId"    column="class_id"    />
         <result property="gradeId"    column="grade_id"    />
         <result property="className"    column="class_name"    />
@@ -14,24 +14,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
+        <association property="schGrades" javaType="schGrades">
+            <result property="gradeId"    column="sg_grade_id"    />
+            <result property="gradeName"    column="sg_grade_name"    />
+            <result property="createBy"    column="sg_create_by"    />
+            <result property="createTime"    column="sg_create_time"    />
+            <result property="updateBy"    column="sg_update_by"    />
+            <result property="updateTime"    column="sg_update_time"    />
+            <result property="remark"    column="sg_remark"    />
+        </association>
     </resultMap>
 
     <sql id="selectSchClassVo">
-        select class_id, grade_id, class_name, capacity, create_by, create_time, update_by, update_time, remark from sch_class
+        select sc.*,
+        sg.grade_id AS sg_grade_id, sg.grade_name AS sg_grade_name,
+        sg.create_by AS sg_create_by,  sg.create_time AS sg_create_time,
+        sg.update_by AS sg_update_by, sg.update_time AS sg_update_time,
+        sg.remark AS sg_remark
+        from sch_class sc
+        LEFT JOIN sch_grades sg ON sc.grade_id = sg.grade_id
     </sql>
 
     <select id="selectSchClassList" parameterType="SchClass" resultMap="SchClassResult">
         <include refid="selectSchClassVo"/>
         <where>  
-            <if test="gradeId != null "> and grade_id = #{gradeId}</if>
-            <if test="className != null  and className != ''"> and class_name like concat('%', #{className}, '%')</if>
+            <if test="gradeId != null "> and sc.grade_id = #{gradeId}</if>
+            <if test="className != null  and className != ''"> and sc.class_name like concat('%', #{className}, '%')</if>
             <if test="capacity != null "> and capacity = #{capacity}</if>
         </where>
     </select>
     
     <select id="selectSchClassByClassId" parameterType="Long" resultMap="SchClassResult">
         <include refid="selectSchClassVo"/>
-        where class_id = #{classId}
+        where sc.class_id = #{classId}
     </select>
         
     <insert id="insertSchClass" parameterType="SchClass" useGeneratedKeys="true" keyProperty="classId">

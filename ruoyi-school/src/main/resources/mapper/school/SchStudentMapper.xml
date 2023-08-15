@@ -18,11 +18,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
-        <association property="schClass" javaType="schClass" resultMap="com.ruoyi.school.mapper.SchClassMapper.SchClassResult"></association>
+        <association property="schClassVo" javaType="com.ruoyi.school.domain.vo.SchClassVo" >
+            <result property="className"    column="sc_class_name"   />
+            <association property="schGrades" javaType="com.ruoyi.school.domain.SchGrades">
+                <result property="gradeName" column="sg_grade_name"></result>
+            </association>
+        </association>
     </resultMap>
 
     <sql id="selectSchStudentVo">
-        select ss.*,sc.class_name from sch_student ss LEFT JOIN sch_class sc ON ss.class_id = sc.class_id
+        select ss.*,sc.class_name AS sc_class_name,sg.grade_name AS sg_grade_name
+        from sch_student ss
+        LEFT JOIN sch_class sc ON ss.class_id = sc.class_id
+        LEFT JOIN sch_grades sg ON sc.grade_id = sg.grade_id
     </sql>
 
     <select id="selectSchStudentList" parameterType="SchStudent" resultMap="SchStudentResult">
@@ -34,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentPhone != null  and studentPhone != ''"> and ss.student_phone = #{studentPhone}</if>
             <if test="studentAddress != null  and studentAddress != ''"> and ss.student_address = #{studentAddress}</if>
             <if test="classId != null "> and ss.class_id = #{classId}</if>
-            <if test="schClass != null and schClass.className != null and schClass.className != ''"> and sc.class_name like concat('%', #{schClass.className}, '%')</if>
+<!--            <if test="schClass != null and schClass.className != null and schClass.className != ''"> and sc.class_name like concat('%', #{schClass.className}, '%')</if>-->
         </where>
     </select>
 
@@ -47,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="studentPhone != null  and studentPhone != ''"> and ss.student_phone = #{studentPhone}</if>
             <if test="studentAddress != null  and studentAddress != ''"> and ss.student_address = #{studentAddress}</if>
             <if test="classId != null "> and ss.class_id = #{classId}</if>
-
+            <if test="gradeId != null "> and sg.grade_id = #{gradeId}</if>
         </where>
 
     </select>

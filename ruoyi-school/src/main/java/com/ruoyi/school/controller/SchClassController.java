@@ -2,6 +2,8 @@ package com.ruoyi.school.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.school.domain.vo.SchClassVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +44,7 @@ public class SchClassController extends BaseController
     public TableDataInfo list(SchClass schClass)
     {
         startPage();
-        List<SchClass> list = schClassService.selectSchClassList(schClass);
+        List<SchClassVo> list = schClassService.selectSchClassList(schClass);
         return getDataTable(list);
     }
 
@@ -54,8 +56,8 @@ public class SchClassController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SchClass schClass)
     {
-        List<SchClass> list = schClassService.selectSchClassList(schClass);
-        ExcelUtil<SchClass> util = new ExcelUtil<SchClass>(SchClass.class);
+        List<SchClassVo> list = schClassService.selectSchClassList(schClass);
+        ExcelUtil<SchClassVo> util = new ExcelUtil<SchClassVo>(SchClassVo.class);
         util.exportExcel(response, list, "学生班级数据");
     }
 

@@ -9,7 +9,7 @@ import com.ruoyi.school.domain.SchGrades;
 import com.ruoyi.school.service.ISchGradesService;
 
 /**
- * 学生年级Service业务层处理
+ * 班级年级Service业务层处理
  * 
  * @author ruoyi
  * @date 2023-08-14
@@ -21,10 +21,10 @@ public class SchGradesServiceImpl implements ISchGradesService
     private SchGradesMapper schGradesMapper;
 
     /**
-     * 查询学生年级
+     * 查询班级年级
      * 
-     * @param gradeId 学生年级主键
-     * @return 学生年级
+     * @param gradeId 班级年级主键
+     * @return 班级年级
      */
     @Override
     public SchGrades selectSchGradesByGradeId(Long gradeId)
@@ -33,10 +33,10 @@ public class SchGradesServiceImpl implements ISchGradesService
     }
 
     /**
-     * 查询学生年级列表
+     * 查询班级年级列表
      * 
-     * @param schGrades 学生年级
-     * @return 学生年级
+     * @param schGrades 班级年级
+     * @return 班级年级
      */
     @Override
     public List<SchGrades> selectSchGradesList(SchGrades schGrades)
@@ -45,9 +45,9 @@ public class SchGradesServiceImpl implements ISchGradesService
     }
 
     /**
-     * 新增学生年级
+     * 新增班级年级
      * 
-     * @param schGrades 学生年级
+     * @param schGrades 班级年级
      * @return 结果
      */
     @Override
@@ -58,9 +58,9 @@ public class SchGradesServiceImpl implements ISchGradesService
     }
 
     /**
-     * 修改学生年级
+     * 修改班级年级
      * 
-     * @param schGrades 学生年级
+     * @param schGrades 班级年级
      * @return 结果
      */
     @Override
@@ -71,9 +71,9 @@ public class SchGradesServiceImpl implements ISchGradesService
     }
 
     /**
-     * 批量删除学生年级
+     * 批量删除班级年级
      * 
-     * @param gradeIds 需要删除的学生年级主键
+     * @param gradeIds 需要删除的班级年级主键
      * @return 结果
      */
     @Override
@@ -83,9 +83,9 @@ public class SchGradesServiceImpl implements ISchGradesService
     }
 
     /**
-     * 删除学生年级信息
+     * 删除班级年级信息
      * 
-     * @param gradeId 学生年级主键
+     * @param gradeId 班级年级主键
      * @return 结果
      */
     @Override

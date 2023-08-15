@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into sch_grades
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="gradeId != null">grade_id,</if>
-            <if test="gradeName != null">grade_name,</if>
+            <if test="gradeName != null and gradeName != ''">grade_name,</if>
             <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateBy != null">update_by,</if>
@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="gradeId != null">#{gradeId},</if>
-            <if test="gradeName != null">#{gradeName},</if>
+            <if test="gradeName != null and gradeName != ''">#{gradeName},</if>
             <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateBy != null">#{updateBy},</if>
@@ -55,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateSchGrades" parameterType="SchGrades">
         update sch_grades
         <trim prefix="SET" suffixOverrides=",">
-            <if test="gradeName != null">grade_name = #{gradeName},</if>
+            <if test="gradeName != null and gradeName != ''">grade_name = #{gradeName},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>

@@ -2,6 +2,7 @@ package com.ruoyi.school.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.school.domain.vo.SchClassVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.school.mapper.SchClassMapper;
@@ -27,7 +28,7 @@ public class SchClassServiceImpl implements ISchClassService
      * @return 学生班级
      */
     @Override
-    public SchClass selectSchClassByClassId(Long classId)
+    public SchClassVo selectSchClassByClassId(Long classId)
     {
         return schClassMapper.selectSchClassByClassId(classId);
     }
@@ -39,7 +40,7 @@ public class SchClassServiceImpl implements ISchClassService
      * @return 学生班级
      */
     @Override
-    public List<SchClass> selectSchClassList(SchClass schClass)
+    public List<SchClassVo> selectSchClassList(SchClass schClass)
     {
         return schClassMapper.selectSchClassList(schClass);
     }

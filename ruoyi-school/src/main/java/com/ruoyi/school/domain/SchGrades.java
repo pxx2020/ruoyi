@@ -6,7 +6,7 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 学生年级对象 sch_grades
+ * 班级年级对象 sch_grades
  * 
  * @author ruoyi
  * @date 2023-08-14

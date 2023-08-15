@@ -1,5 +1,6 @@
 package com.ruoyi.school.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -11,8 +12,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2023-08-14
  */
-public class SchClass extends BaseEntity
-{
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class SchClass extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 班级ID */

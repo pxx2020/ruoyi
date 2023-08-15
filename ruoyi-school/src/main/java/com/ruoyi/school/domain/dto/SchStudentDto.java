@@ -27,8 +27,9 @@ public class SchStudentDto extends BaseEntity {
     /** 联系地址 */
     private String studentAddress;
 
-    /** 所在班级 */
+    /** 班级id */
     private Long classId;
 
-
+    /** 年级id */
+    private Long gradeId;
 }

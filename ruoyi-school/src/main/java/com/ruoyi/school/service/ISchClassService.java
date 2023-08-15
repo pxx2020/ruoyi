@@ -2,6 +2,7 @@ package com.ruoyi.school.service;
 
 import java.util.List;
 import com.ruoyi.school.domain.SchClass;
+import com.ruoyi.school.domain.vo.SchClassVo;
 
 /**
  * 学生班级Service接口
@@ -17,7 +18,7 @@ public interface ISchClassService
      * @param classId 学生班级主键
      * @return 学生班级
      */
-    public SchClass selectSchClassByClassId(Long classId);
+    public SchClassVo selectSchClassByClassId(Long classId);
 
     /**
      * 查询学生班级列表
@@ -25,7 +26,7 @@ public interface ISchClassService
      * @param schClass 学生班级
      * @return 学生班级集合
      */
-    public List<SchClass> selectSchClassList(SchClass schClass);
+    public List<SchClassVo> selectSchClassList(SchClass schClass);
 
     /**
      * 新增学生班级

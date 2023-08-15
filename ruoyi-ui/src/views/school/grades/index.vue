@@ -63,7 +63,7 @@
 
     <el-table v-loading="loading" :data="gradesList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="年级id" align="center" prop="gradeId" />
+      <!-- <el-table-column label="年级id" align="center" prop="gradeId" /> -->
       <el-table-column label="年级名称" align="center" prop="gradeName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -93,7 +93,7 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改学生年级对话框 -->
+    <!-- 添加或修改班级年级对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="年级名称" prop="gradeName">
@@ -130,7 +130,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 学生年级表格数据
+      // 班级年级表格数据
       gradesList: [],
       // 弹出层标题
       title: "",
@@ -146,6 +146,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        gradeName: [
+          { required: true, message: "年级名称不能为空", trigger: "blur" }
+        ],
       }
     };
   },
@@ -153,7 +156,7 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询学生年级列表 */
+    /** 查询班级年级列表 */
     getList() {
       this.loading = true;
       listGrades(this.queryParams).then(response => {
@@ -200,7 +203,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加年级";
+      this.title = "添加班级年级";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -209,7 +212,7 @@ export default {
       getGrades(gradeId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改年级";
+        this.title = "修改班级年级";
       });
     },
     /** 提交按钮 */
@@ -235,7 +238,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const gradeIds = row.gradeId || this.ids;
-      this.$modal.confirm('是否确认删除年级编号为"' + gradeIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除班级年级编号为"' + gradeIds + '"的数据项？').then(function() {
         return delGrades(gradeIds);
       }).then(() => {
         this.getList();

@@ -22,7 +22,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
- * 学生年级Controller
+ * 班级年级Controller
  * 
  * @author ruoyi
  * @date 2023-08-14
@@ -35,7 +35,7 @@ public class SchGradesController extends BaseController
     private ISchGradesService schGradesService;
 
     /**
-     * 查询学生年级列表
+     * 查询班级年级列表
      */
     @PreAuthorize("@ss.hasPermi('school:grades:list')")
     @GetMapping("/list")
@@ -47,20 +47,20 @@ public class SchGradesController extends BaseController
     }
 
     /**
-     * 导出学生年级列表
+     * 导出班级年级列表
      */
     @PreAuthorize("@ss.hasPermi('school:grades:export')")
-    @Log(title = "学生年级", businessType = BusinessType.EXPORT)
+    @Log(title = "班级年级", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, SchGrades schGrades)
     {
         List<SchGrades> list = schGradesService.selectSchGradesList(schGrades);
         ExcelUtil<SchGrades> util = new ExcelUtil<SchGrades>(SchGrades.class);
-        util.exportExcel(response, list, "学生年级数据");
+        util.exportExcel(response, list, "班级年级数据");
     }
 
     /**
-     * 获取学生年级详细信息
+     * 获取班级年级详细信息
      */
     @PreAuthorize("@ss.hasPermi('school:grades:query')")
     @GetMapping(value = "/{gradeId}")
@@ -70,10 +70,10 @@ public class SchGradesController extends BaseController
     }
 
     /**
-     * 新增学生年级
+     * 新增班级年级
      */
     @PreAuthorize("@ss.hasPermi('school:grades:add')")
-    @Log(title = "学生年级", businessType = BusinessType.INSERT)
+    @Log(title = "班级年级", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody SchGrades schGrades)
     {
@@ -81,10 +81,10 @@ public class SchGradesController extends BaseController
     }
 
     /**
-     * 修改学生年级
+     * 修改班级年级
      */
     @PreAuthorize("@ss.hasPermi('school:grades:edit')")
-    @Log(title = "学生年级", businessType = BusinessType.UPDATE)
+    @Log(title = "班级年级", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SchGrades schGrades)
     {
@@ -92,10 +92,10 @@ public class SchGradesController extends BaseController
     }
 
     /**
-     * 删除学生年级
+     * 删除班级年级
      */
     @PreAuthorize("@ss.hasPermi('school:grades:remove')")
-    @Log(title = "学生年级", businessType = BusinessType.DELETE)
+    @Log(title = "班级年级", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{gradeIds}")
     public AjaxResult remove(@PathVariable Long[] gradeIds)
     {

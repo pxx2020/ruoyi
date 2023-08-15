@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询学生年级列表
+// 查询班级年级列表
 export function listGrades(query) {
   return request({
     url: '/school/grades/list',
@@ -9,7 +9,7 @@ export function listGrades(query) {
   })
 }
 
-// 查询学生年级详细
+// 查询班级年级详细
 export function getGrades(gradeId) {
   return request({
     url: '/school/grades/' + gradeId,
@@ -17,7 +17,7 @@ export function getGrades(gradeId) {
   })
 }
 
-// 新增学生年级
+// 新增班级年级
 export function addGrades(data) {
   return request({
     url: '/school/grades',
@@ -26,7 +26,7 @@ export function addGrades(data) {
   })
 }
 
-// 修改学生年级
+// 修改班级年级
 export function updateGrades(data) {
   return request({
     url: '/school/grades',
@@ -35,7 +35,7 @@ export function updateGrades(data) {
   })
 }
 
-// 删除学生年级
+// 删除班级年级
 export function delGrades(gradeId) {
   return request({
     url: '/school/grades/' + gradeId,

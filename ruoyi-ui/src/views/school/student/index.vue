@@ -43,13 +43,23 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="所在班级" prop="classId">
+      <el-form-item label="班级" prop="classId">
         <el-select v-model="queryParams.classId" placeholder="选择班级">
             <el-option
               v-for="item in classesList"
               :key="item.classId"
               :label="item.className"
               :value="item.classId"
+            ></el-option>
+          </el-select>
+      </el-form-item>
+      <el-form-item label="年级" prop="gradeId">
+        <el-select v-model="queryParams.gradeId" placeholder="选择年级">
+            <el-option
+              v-for="item in gradesList"
+              :key="item.gradeId"
+              :label="item.gradeName"
+              :value="item.gradeId"
             ></el-option>
           </el-select>
       </el-form-item>
@@ -121,7 +131,16 @@
       </el-table-column>
       <el-table-column label="联系电话" align="center" prop="studentPhone" />
       <el-table-column label="联系地址" align="center" prop="studentAddress" />
-      <el-table-column label="所在班级" align="center" prop="className" />
+      <el-table-column label="班级" align="center" >
+        <template slot-scope="scope">
+          {{ scope.row.schClassVo && scope.row.schClassVo.className }}
+        </template>
+      </el-table-column>
+      <el-table-column label="年级" align="center" >
+        <template slot-scope="scope">
+          {{ scope.row.schClassVo && scope.row.schClassVo.schGrades && scope.row.schClassVo.schGrades.gradeName}}
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -182,7 +201,15 @@
           <el-input v-model="form.studentAddress" placeholder="请输入联系地址" />
         </el-form-item>
         <el-form-item label="所在班级" prop="classId">
-          <el-input v-model="form.classId" placeholder="请输入所在班级" />
+          <!-- <el-input v-model="form.classId" placeholder="请输入所在班级" /> -->
+          <el-select v-model="form.classId" placeholder="选择班级">
+            <el-option
+              v-for="item in classesList"
+              :key="item.classId"
+              :label="item.className"
+              :value="item.classId"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
@@ -199,6 +226,7 @@
 <script>
 import { listStudent, getStudent, delStudent, addStudent, updateStudent } from "@/api/school/student";
 import { listClasses } from "@/api/school/classes";
+import { listGrades } from "@/api/school/grades";
 export default {
   name: "Student",
   dicts: ['sys_user_sex'],
@@ -220,6 +248,8 @@ export default {
       studentList: [],
       //班级列表
       classesList:[],
+      //年级列表
+      gradesList:[],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -234,6 +264,7 @@ export default {
         studentPhone: null,
         studentAddress: null,
         classId: null,
+        gradeId: null
         // 'schClass.className':'计算机',
 
         // className:'计算机'
@@ -245,6 +276,9 @@ export default {
         studentName: [
           { required: true, message: "学生姓名不能为空", trigger: "blur" }
         ],
+        classId: [
+          { required: true, message: "请选择班级", trigger: "change" }
+        ],
       }
     };
   },
@@ -252,7 +286,9 @@ export default {
     this.getList();
     listClasses({ pageNum: 1,pageSize: 999}).then(response => {
         this.classesList = response.rows;
-        this.total = response.total;
+      });
+      listGrades({ pageNum: 1,pageSize: 999}).then(response => {
+        this.gradesList = response.rows;
       });
   },
   methods: {
@@ -280,6 +316,7 @@ export default {
         studentPhone: null,
         studentAddress: null,
         classId: null,
+        gradeId:null,
         createBy: null,
         createTime: null,
         updateBy: null,

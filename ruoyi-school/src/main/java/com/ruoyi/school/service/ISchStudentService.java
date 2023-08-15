@@ -19,7 +19,7 @@ public interface ISchStudentService
      * @param studentId 学生信息主键
      * @return 学生信息
      */
-    public SchStudent selectSchStudentByStudentId(Long studentId);
+    public SchStudentVo selectSchStudentByStudentId(Long studentId);
 
     /**
      * 查询学生信息列表

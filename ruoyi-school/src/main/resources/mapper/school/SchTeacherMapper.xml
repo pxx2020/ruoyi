@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.school.mapper.SchTeacherMapper">
+    
+    <resultMap type="SchTeacher" id="SchTeacherResult">
+        <result property="teacherId"    column="teacher_id"    />
+        <result property="teacherName"    column="teacher_name"    />
+        <result property="teacherPhone"    column="teacher_phone"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSchTeacherVo">
+        select teacher_id, teacher_name, teacher_phone, create_by, create_time, update_by, update_time, remark from sch_teacher
+    </sql>
+
+<!--    <sql id="selectTeacherBoundClassesSql">-->
+<!--        SELECT c.class_id, c.class_name,tc.teacher_id-->
+<!--        FROM sch_class c-->
+<!--        LEFT JOIN sch_teacher_class tc ON c.class_id = tc.class_id AND tc.teacher_id = #{teacherId}-->
+<!--    </sql>-->
+
+    <select id="selectSchTeacherList" parameterType="SchTeacher" resultMap="SchTeacherResult">
+        <include refid="selectSchTeacherVo"/>
+        <where>  
+            <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
+            <if test="teacherPhone != null  and teacherPhone != ''"> and teacher_phone = #{teacherPhone}</if>
+        </where>
+    </select>
+    
+    <select id="selectSchTeacherByTeacherId" parameterType="Long" resultMap="SchTeacherResult">
+        <include refid="selectSchTeacherVo"/>
+        where teacher_id = #{teacherId}
+    </select>
+
+    <select id="selectTeacherBoundClasses"  parameterType="Long" resultType="com.ruoyi.school.domain.SchClass">
+       SELECT c.class_id, c.class_name
+       FROM sch_class c
+       JOIN sch_teacher_class tc ON c.class_id = tc.class_id
+       WHERE tc.teacher_id = #{teacherId}
+    </select>
+        
+    <insert id="insertSchTeacher" parameterType="SchTeacher" useGeneratedKeys="true" keyProperty="teacherId">
+        insert into sch_teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">teacher_name,</if>
+            <if test="teacherPhone != null">teacher_phone,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">#{teacherName},</if>
+            <if test="teacherPhone != null">#{teacherPhone},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSchTeacher" parameterType="SchTeacher">
+        update sch_teacher
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teacherName != null and teacherName != ''">teacher_name = #{teacherName},</if>
+            <if test="teacherPhone != null">teacher_phone = #{teacherPhone},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where teacher_id = #{teacherId}
+    </update>
+
+    <delete id="deleteSchTeacherByTeacherId" parameterType="Long">
+        delete from sch_teacher where teacher_id = #{teacherId}
+    </delete>
+
+    <delete id="deleteSchTeacherByTeacherIds" parameterType="String">
+        delete from sch_teacher where teacher_id in 
+        <foreach item="teacherId" collection="array" open="(" separator="," close=")">
+            #{teacherId}
+        </foreach>
+    </delete>
+</mapper>

@@ -37,6 +37,6 @@ public class SchStudentVo extends BaseEntity {
     private String className;
 
     /** 班级信息 */
-    private SchClass schClass;
+    private SchClassVo schClassVo;
 
 }

@@ -1,32 +1,22 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="年级" prop="gradeId">
-        <el-select v-model="queryParams.gradeId" placeholder="请选择年级">
-            <el-option
-              v-for="item in gradesList"
-              :key="item.gradeId"
-              :label="item.gradeName"
-              :value="item.gradeId"
-            ></el-option>
-          </el-select>
-      </el-form-item>
-      <el-form-item label="班级名称" prop="className">
+      <el-form-item label="老师姓名" prop="teacherName">
         <el-input
-          v-model="queryParams.className"
-          placeholder="请输入班级名称"
+          v-model="queryParams.teacherName"
+          placeholder="请输入老师姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <!-- <el-form-item label="班级容量" prop="capacity">
+      <el-form-item label="老师电话" prop="teacherPhone">
         <el-input
-          v-model="queryParams.capacity"
-          placeholder="请输入班级容量"
+          v-model="queryParams.teacherPhone"
+          placeholder="请输入老师电话"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item> -->
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -41,7 +31,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['school:classes:add']"
+          v-hasPermi="['school:teacher:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -52,7 +42,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['school:classes:edit']"
+          v-hasPermi="['school:teacher:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -63,7 +53,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['school:classes:remove']"
+          v-hasPermi="['school:teacher:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -73,34 +63,39 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['school:classes:export']"
+          v-hasPermi="['school:teacher:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="classesList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="teacherList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <!-- <el-table-column label="班级ID" align="center" prop="classId" /> -->
-    
-      <el-table-column label="班级名称" align="center" prop="className" />
-      <el-table-column label="年级" align="center" prop="schGrades.gradeName" />
-      <el-table-column label="班级容量" align="center" prop="capacity" />
+      <el-table-column label="老师ID" align="center" prop="teacherId" />
+      <el-table-column label="老师姓名" align="center" prop="teacherName" />
+      <el-table-column label="老师电话" align="center" prop="teacherPhone" />
+      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
+            @click="handleClasses(scope.row)"
+          >我的班级</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['school:classes:edit']"
+            v-hasPermi="['school:teacher:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['school:classes:remove']"
+            v-hasPermi="['school:teacher:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -114,25 +109,14 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改学生班级对话框 -->
+    <!-- 添加或修改教师管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-       
-        <el-form-item label="班级名称" prop="className">
-          <el-input v-model="form.className" placeholder="请输入班级名称" />
+        <el-form-item label="老师姓名" prop="teacherName">
+          <el-input v-model="form.teacherName" placeholder="请输入老师姓名" />
         </el-form-item>
-        <el-form-item label="所属年级" prop="gradeId">
-          <el-select v-model="form.gradeId" placeholder="请选择所属年级">
-            <el-option
-              v-for="item in gradesList"
-              :key="item.gradeId"
-              :label="item.gradeName"
-              :value="item.gradeId"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="班级容量" prop="capacity">
-          <el-input v-model="form.capacity" placeholder="请输入班级容量" />
+        <el-form-item label="老师电话" prop="teacherPhone">
+          <el-input v-model="form.teacherPhone" placeholder="请输入老师电话" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
@@ -143,18 +127,59 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 添加或修改教师管理对话框 -->
+    <el-dialog title="我的班级" :visible.sync="openClasses" width="500px" append-to-body>
+      <el-table v-loading="loadingClasses" :data="classesList" @selection-change="handleClassesSelectionChange">
+      <el-table-column type="selection" width="55" align="center" />
+      <!-- <el-table-column label="老师ID" align="center" prop="teacherId" />
+      <el-table-column label="老师姓名" align="center" prop="teacherName" />
+      <el-table-column label="老师电话" align="center" prop="teacherPhone" />
+      <el-table-column label="备注" align="center" prop="remark" /> -->
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <!-- <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleClasses(scope.row)"
+          >我的班级</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['school:teacher:edit']"
+          >修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['school:teacher:remove']"
+          >删除</el-button>
+        </template> -->
+      </el-table-column>
+    </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="openClasses = false">确 定</el-button>
+        <el-button @click="openClasses = false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listClasses, getClasses, delClasses, addClasses, updateClasses } from "@/api/school/classes";
-import { listGrades } from "@/api/school/grades";
+import { listTeacher, getTeacher, delTeacher, addTeacher, updateTeacher,getTeacherBoundClasses} from "@/api/school/teacher";
+
 export default {
-  name: "Classes",
+  name: "Teacher",
   data() {
     return {
       // 遮罩层
       loading: true,
+      //遮罩层（我的班级）
+      loadingClasses:true,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -165,49 +190,53 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 学生班级表格数据
-      classesList: [],
-      //年级列表
-      gradesList:[],
+      // 教师管理表格数据
+      teacherList: [],
+      // 我的班级列表
+      classesList:[],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
+      //是否显示弹出层（我的班级）
+      openClasses:false,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        gradeId: null,
-        className: null,
-        capacity: null,
+        teacherName: null,
+        teacherPhone: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-       
-        className: [
-          { required: true, message: "班级名称不能为空", trigger: "blur" }
-        ],
-        gradeId: [
-          { required: true, message: "请选择年级", trigger: "change" }
+        teacherName: [
+          { required: true, message: "老师姓名不能为空", trigger: "blur" }
         ],
       }
     };
   },
   created() {
     this.getList();
-    listGrades({pageNum: 1,
-        pageSize: 999}).then(response => {
-        this.gradesList = response.rows;
-      });
   },
   methods: {
-    /** 查询学生班级列表 */
+
+    //我的班级
+    handleClasses(row){
+      getTeacherBoundClasses(row.teacherId).then(e=>{
+        console.log("我的班级",e);
+        // this.classesList
+        this.openClasses = true;
+        this.loadingClasses = false;
+      })
+    },
+
+    /** 查询教师管理列表 */
     getList() {
       this.loading = true;
-      listClasses(this.queryParams).then(response => {
-        this.classesList = response.rows;
+      listTeacher(this.queryParams).then(response => {
+        this.teacherList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -220,10 +249,9 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        classId: null,
-        gradeId: null,
-        className: null,
-        capacity: null,
+        teacherId: null,
+        teacherName: null,
+        teacherPhone: null,
         createBy: null,
         createTime: null,
         updateBy: null,
@@ -244,38 +272,44 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.classId)
+      this.ids = selection.map(item => item.teacherId)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
+
+    // 多选框选中数据（我的班级）
+    handleClassesSelectionChange(selection){
+
+    },
+
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加学生班级";
+      this.title = "添加教师管理";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const classId = row.classId || this.ids
-      getClasses(classId).then(response => {
+      const teacherId = row.teacherId || this.ids
+      getTeacher(teacherId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改学生班级";
+        this.title = "修改教师管理";
       });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.classId != null) {
-            updateClasses(this.form).then(response => {
+          if (this.form.teacherId != null) {
+            updateTeacher(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addClasses(this.form).then(response => {
+            addTeacher(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -286,9 +320,9 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const classIds = row.classId || this.ids;
-      this.$modal.confirm('是否确认删除学生班级编号为"' + classIds + '"的数据项？').then(function() {
-        return delClasses(classIds);
+      const teacherIds = row.teacherId || this.ids;
+      this.$modal.confirm('是否确认删除教师管理编号为"' + teacherIds + '"的数据项？').then(function() {
+        return delTeacher(teacherIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -296,9 +330,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('school/classes/export', {
+      this.download('school/teacher/export', {
         ...this.queryParams
-      }, `classes_${new Date().getTime()}.xlsx`)
+      }, `teacher_${new Date().getTime()}.xlsx`)
     }
   }
 };
