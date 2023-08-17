@@ -12,7 +12,6 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2023-08-14
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SchClass extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

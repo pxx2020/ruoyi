@@ -1,6 +1,7 @@
 package com.ruoyi.school.controller;
 
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.school.domain.SchClass;
@@ -61,6 +62,18 @@ public class SchTeacherController extends BaseController
     }
 
     /**
+     * 查询老师还未绑定的班级列表
+     * @param teacherId
+     * @return
+     */
+    @GetMapping("/getTeacherUnBoundClasses/{teacherId}")
+    public TableDataInfo getTeacherUnBoundClasses(@PathVariable Long teacherId) {
+        startPage();
+        List<SchClass> list = schTeacherService.selectTeacherUnBoundClasses(teacherId);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出教师管理列表
      */
     @PreAuthorize("@ss.hasPermi('school:teacher:export')")
@@ -95,6 +108,16 @@ public class SchTeacherController extends BaseController
     }
 
     /**
+     * 添加教师的班级
+     */
+    @Log(title = "教师班级", businessType = BusinessType.INSERT)
+    @PostMapping("/addTeacherBoundClass")
+    public AjaxResult addTeacherBoundClass(@RequestBody Map<String,Object> objectMap)
+    {
+        return toAjax(schTeacherService.insertSchTeacherClass(objectMap));
+    }
+
+    /**
      * 修改教师管理
      */
     @PreAuthorize("@ss.hasPermi('school:teacher:edit')")
@@ -115,4 +138,16 @@ public class SchTeacherController extends BaseController
     {
         return toAjax(schTeacherService.deleteSchTeacherByTeacherIds(teacherIds));
     }
+
+    /**
+     * 删除我的班级
+     */
+    @Log(title = "教师班级", businessType = BusinessType.DELETE)
+    @PostMapping("/deleteTeacherBoundClasses")
+    public AjaxResult deleteTeacherBoundClasses(@RequestBody Map<String,Object> objectMap)
+    {
+        return toAjax(schTeacherService.deleteSchTeacherClassByTeacherIds(objectMap));
+    }
+
+
 }

@@ -1,6 +1,8 @@
 package com.ruoyi.school.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.school.domain.SchClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,16 @@ public class SchTeacherServiceImpl implements ISchTeacherService
     }
 
     /**
+     * 查询教师还未绑定的班级列表
+     * @param teacherId
+     * @return
+     */
+    @Override
+    public List<SchClass> selectTeacherUnBoundClasses(Long teacherId) {
+        return schTeacherMapper.selectTeacherUnBoundClasses(teacherId);
+    }
+
+    /**
      * 新增教师管理
      * 
      * @param schTeacher 教师管理
@@ -66,6 +78,16 @@ public class SchTeacherServiceImpl implements ISchTeacherService
     {
         schTeacher.setCreateTime(DateUtils.getNowDate());
         return schTeacherMapper.insertSchTeacher(schTeacher);
+    }
+
+    /**
+     * 添加教师的班级
+     * @param objectMap 班级id 和 教师id
+     * @return
+     */
+    @Override
+    public int insertSchTeacherClass(Map<String, Object> objectMap) {
+        return schTeacherMapper.insertSchTeacherClass(objectMap);
     }
 
     /**
@@ -103,5 +125,10 @@ public class SchTeacherServiceImpl implements ISchTeacherService
     public int deleteSchTeacherByTeacherId(Long teacherId)
     {
         return schTeacherMapper.deleteSchTeacherByTeacherId(teacherId);
+    }
+
+    @Override
+    public int deleteSchTeacherClassByTeacherIds(Map<String, Object> objectMap) {
+        return schTeacherMapper.deleteSchTeacherClassByTeacherIds(objectMap);
     }
 }

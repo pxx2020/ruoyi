@@ -1,6 +1,7 @@
 package com.ruoyi.school.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.school.domain.SchClass;
 import com.ruoyi.school.domain.SchTeacher;
@@ -37,12 +38,25 @@ public interface ISchTeacherService
     public List<SchClass> selectTeacherBoundClasses(Long teacherId);
 
     /**
+     * 根据教师ID查询教师已绑定的班级集合
+     * @param teacherId
+     * @return 教师已绑定的班级集合
+     */
+    public List<SchClass> selectTeacherUnBoundClasses(Long teacherId);
+
+    /**
      * 新增教师管理
-     * 
      * @param schTeacher 教师管理
      * @return 结果
      */
     public int insertSchTeacher(SchTeacher schTeacher);
+
+    /**
+     * 添加教师班级
+     * @param objectMap 教师班级
+     * @return 结果
+     */
+    public int insertSchTeacherClass(Map<String,Object> objectMap);
 
     /**
      * 修改教师管理
@@ -67,4 +81,11 @@ public interface ISchTeacherService
      * @return 结果
      */
     public int deleteSchTeacherByTeacherId(Long teacherId);
+
+    /**
+     * 删除教师的班级
+     * @param objectMap
+     * @return 结果
+     */
+    public int deleteSchTeacherClassByTeacherIds(Map<String,Object> objectMap);
 }

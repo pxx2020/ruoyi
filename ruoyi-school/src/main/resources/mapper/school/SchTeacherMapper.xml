@@ -38,12 +38,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where teacher_id = #{teacherId}
     </select>
 
-    <select id="selectTeacherBoundClasses"  parameterType="Long" resultType="com.ruoyi.school.domain.SchClass">
-       SELECT c.class_id, c.class_name
+    <select id="selectTeacherBoundClasses"  parameterType="Long" resultType="com.ruoyi.school.domain.vo.SchClassVo">
+       SELECT c.class_id, c.class_name,tc.teacher_id
        FROM sch_class c
        JOIN sch_teacher_class tc ON c.class_id = tc.class_id
        WHERE tc.teacher_id = #{teacherId}
     </select>
+
+    <select id="selectTeacherUnBoundClasses"  parameterType="Long" resultType="com.ruoyi.school.domain.vo.SchClassVo">
+      SELECT c.class_id, c.class_name
+      FROM sch_class c
+      LEFT JOIN sch_teacher_class tc ON c.class_id = tc.class_id AND tc.teacher_id = #{teacherId}
+      WHERE tc.teacher_id IS NULL
+    </select>
+
         
     <insert id="insertSchTeacher" parameterType="SchTeacher" useGeneratedKeys="true" keyProperty="teacherId">
         insert into sch_teacher
@@ -65,6 +73,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">#{updateTime},</if>
             <if test="remark != null">#{remark},</if>
          </trim>
+    </insert>
+
+    <insert id="insertSchTeacherClass" parameterType="java.util.Map">
+        INSERT INTO sch_teacher_class (teacher_id, class_id)
+        VALUES
+        <foreach collection="classIds" item="classId" separator=",">
+            (#{teacherId}, #{classId})
+        </foreach>
     </insert>
 
     <update id="updateSchTeacher" parameterType="SchTeacher">
@@ -89,6 +105,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from sch_teacher where teacher_id in 
         <foreach item="teacherId" collection="array" open="(" separator="," close=")">
             #{teacherId}
+
+        </foreach>
+    </delete>
+
+    <delete id="deleteSchTeacherClassByTeacherIds" parameterType="java.util.Map">
+        delete from sch_teacher_class where teacher_id = #{teacherId} and class_id in
+        <foreach item="id" collection="classIds" open="(" separator="," close=")">
+            #{id}
         </foreach>
     </delete>
 </mapper>

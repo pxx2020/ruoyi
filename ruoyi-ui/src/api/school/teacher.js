@@ -17,13 +17,14 @@ export function getTeacherBoundClasses(teacherId) {
   })
 }
 
-// 查询教师已绑定的班级列表
-export function getTeacherUnboundClasses(teacherId) {
+// 查询教师还未绑定的班级列表
+export function getTeacherUnBoundClasses(teacherId) {
   return request({
-    url: '/school/teacher/getTeacherUnboundClasses/' + teacherId,
+    url: '/school/teacher/getTeacherUnBoundClasses/' + teacherId,
     method: 'get'
   })
 }
+
 
 // 查询教师管理详细
 export function getTeacher(teacherId) {
@@ -37,6 +38,15 @@ export function getTeacher(teacherId) {
 export function addTeacher(data) {
   return request({
     url: '/school/teacher',
+    method: 'post',
+    data: data
+  })
+}
+
+// 教师绑定班级
+export function addTeacherBoundClass(data) {
+  return request({
+    url: '/school/teacher/addTeacherBoundClass',
     method: 'post',
     data: data
   })
@@ -56,6 +66,15 @@ export function delTeacher(teacherId) {
   return request({
     url: '/school/teacher/' + teacherId,
     method: 'delete'
+  })
+}
+
+// 删除教师绑定的班级
+export function delTeacherBoundClasses(data) {
+  return request({
+    url: '/school/teacher/deleteTeacherBoundClasses',
+    method: 'post',
+    data: data
   })
 }
 
