@@ -57,12 +57,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="classId != null "> and ss.class_id = #{classId}</if>
             <if test="gradeId != null "> and sg.grade_id = #{gradeId}</if>
         </where>
-
     </select>
     
     <select id="selectSchStudentByStudentId" parameterType="Long" resultMap="SchStudentResult">
         <include refid="selectSchStudentVo"/>
         where ss.student_id = #{studentId}
+    </select>
+
+    <select id="selectStudentTeachers" parameterType="schStudentDto" resultType="SchTeacher">
+        SELECT st.teacher_id,st.teacher_name,st.teacher_phone
+        FROM sch_teacher st
+        JOIN sch_teacher_class tc ON st.teacher_id = tc.teacher_id
+        WHERE tc.class_id = (SELECT class_id FROM sch_student WHERE student_id = #{studentId})
     </select>
         
     <insert id="insertSchStudent" parameterType="SchStudent" useGeneratedKeys="true" keyProperty="studentId">

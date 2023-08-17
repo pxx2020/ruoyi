@@ -3,6 +3,7 @@ package com.ruoyi.school.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.school.domain.SchTeacher;
 import com.ruoyi.school.domain.dto.SchStudentDto;
 import com.ruoyi.school.domain.vo.SchStudentVo;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,6 +47,17 @@ public class SchStudentController extends BaseController
     {
         startPage();
         List<SchStudentVo> list = schStudentService.selectSchStudentListDto(schStudentDto);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询学生的老师列表
+     */
+    @GetMapping("/getStudentTeachers")
+    public TableDataInfo getStudentTeachers(SchStudentDto schStudentDto)
+    {
+        startPage();
+        List<SchTeacher> list = schStudentService.selectStudentTeachers(schStudentDto);
         return getDataTable(list);
     }
 

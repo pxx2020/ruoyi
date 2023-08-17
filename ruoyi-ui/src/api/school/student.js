@@ -17,6 +17,15 @@ export function getStudent(studentId) {
   })
 }
 
+// 查询学生的老师
+export function getStudentTeachers(query) {
+  return request({
+    url: '/school/student/getStudentTeachers',
+    method: 'get',
+    params: query
+  })
+}
+
 // 新增学生信息
 export function addStudent(data) {
   return request({
