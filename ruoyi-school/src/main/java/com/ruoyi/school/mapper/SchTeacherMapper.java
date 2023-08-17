@@ -32,17 +32,17 @@ public interface SchTeacherMapper
 
     /**
      * 查询教师已经绑定的班级列表
-     * @param teacherId
+     * @param schTeacher
      * @return
      */
-    public List<SchClass> selectTeacherBoundClasses(Long teacherId);
+    public List<SchClass> selectTeacherBoundClasses(SchTeacher schTeacher);
 
     /**
      * 查询教师还未绑定的班级列表
-     * @param teacherId
+     * @param schTeacher
      * @return
      */
-    public List<SchClass> selectTeacherUnBoundClasses(Long teacherId);
+    public List<SchClass> selectTeacherUnBoundClasses(SchTeacher schTeacher);
 
     /**
      * 新增教师管理

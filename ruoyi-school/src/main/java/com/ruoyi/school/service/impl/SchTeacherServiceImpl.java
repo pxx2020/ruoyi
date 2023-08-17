@@ -49,22 +49,22 @@ public class SchTeacherServiceImpl implements ISchTeacherService
 
     /**
      * 查询教师绑定的班级列表
-     * @param teacherId
+     * @param schTeacher
      * @return
      */
     @Override
-    public List<SchClass> selectTeacherBoundClasses(Long teacherId) {
-        return schTeacherMapper.selectTeacherBoundClasses(teacherId);
+    public List<SchClass> selectTeacherBoundClasses(SchTeacher schTeacher) {
+        return schTeacherMapper.selectTeacherBoundClasses(schTeacher);
     }
 
     /**
      * 查询教师还未绑定的班级列表
-     * @param teacherId
+     * @param schTeacher
      * @return
      */
     @Override
-    public List<SchClass> selectTeacherUnBoundClasses(Long teacherId) {
-        return schTeacherMapper.selectTeacherUnBoundClasses(teacherId);
+    public List<SchClass> selectTeacherUnBoundClasses(SchTeacher schTeacher) {
+        return schTeacherMapper.selectTeacherUnBoundClasses(schTeacher);
     }
 
     /**

@@ -32,17 +32,17 @@ public interface ISchTeacherService
 
     /**
      * 根据教师ID查询教师已绑定的班级集合
-     * @param teacherId
+     * @param schTeacher
      * @return 教师已绑定的班级集合
      */
-    public List<SchClass> selectTeacherBoundClasses(Long teacherId);
+    public List<SchClass> selectTeacherBoundClasses(SchTeacher schTeacher);
 
     /**
      * 根据教师ID查询教师已绑定的班级集合
-     * @param teacherId
+     * @param schTeacher
      * @return 教师已绑定的班级集合
      */
-    public List<SchClass> selectTeacherUnBoundClasses(Long teacherId);
+    public List<SchClass> selectTeacherUnBoundClasses(SchTeacher schTeacher);
 
     /**
      * 新增教师管理

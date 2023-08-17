@@ -38,14 +38,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where teacher_id = #{teacherId}
     </select>
 
-    <select id="selectTeacherBoundClasses"  parameterType="Long" resultType="com.ruoyi.school.domain.vo.SchClassVo">
+    <select id="selectTeacherBoundClasses"  parameterType="SchTeacher" resultType="com.ruoyi.school.domain.vo.SchClassVo">
        SELECT c.class_id, c.class_name,tc.teacher_id
        FROM sch_class c
        JOIN sch_teacher_class tc ON c.class_id = tc.class_id
        WHERE tc.teacher_id = #{teacherId}
     </select>
 
-    <select id="selectTeacherUnBoundClasses"  parameterType="Long" resultType="com.ruoyi.school.domain.vo.SchClassVo">
+    <select id="selectTeacherUnBoundClasses"  parameterType="SchTeacher" resultType="com.ruoyi.school.domain.vo.SchClassVo">
       SELECT c.class_id, c.class_name
       FROM sch_class c
       LEFT JOIN sch_teacher_class tc ON c.class_id = tc.class_id AND tc.teacher_id = #{teacherId}

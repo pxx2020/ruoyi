@@ -10,18 +10,20 @@ export function listTeacher(query) {
 }
 
 // 查询教师已绑定的班级列表
-export function getTeacherBoundClasses(teacherId) {
+export function getTeacherBoundClasses(query) {
   return request({
-    url: '/school/teacher/getTeacherBoundClasses/' + teacherId,
-    method: 'get'
+    url: '/school/teacher/getTeacherBoundClasses',
+    method: 'get',
+    params: query
   })
 }
 
 // 查询教师还未绑定的班级列表
-export function getTeacherUnBoundClasses(teacherId) {
+export function getTeacherUnBoundClasses(query) {
   return request({
-    url: '/school/teacher/getTeacherUnBoundClasses/' + teacherId,
-    method: 'get'
+    url: '/school/teacher/getTeacherUnBoundClasses',
+    method: 'get',
+    params: query
   })
 }
 

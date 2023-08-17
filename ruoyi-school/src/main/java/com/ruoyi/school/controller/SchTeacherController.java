@@ -51,25 +51,25 @@ public class SchTeacherController extends BaseController
 
     /**
      * 查询老师已经绑定的班级列表
-     * @param teacherId
-     * @return
+     * @param schTeacher  教师信息
+     * @return 已经绑定的班级列表
      */
-    @GetMapping("/getTeacherBoundClasses/{teacherId}")
-    public TableDataInfo getTeacherBoundClasses(@PathVariable Long teacherId) {
+    @GetMapping("/getTeacherBoundClasses")
+    public TableDataInfo getTeacherBoundClasses(SchTeacher schTeacher) {
         startPage();
-        List<SchClass> list = schTeacherService.selectTeacherBoundClasses(teacherId);
+        List<SchClass> list = schTeacherService.selectTeacherBoundClasses(schTeacher);
         return getDataTable(list);
     }
 
     /**
      * 查询老师还未绑定的班级列表
-     * @param teacherId
-     * @return
+     * @param schTeacher 教师信息
+     * @return 未绑定的班级列表
      */
-    @GetMapping("/getTeacherUnBoundClasses/{teacherId}")
-    public TableDataInfo getTeacherUnBoundClasses(@PathVariable Long teacherId) {
+    @GetMapping("/getTeacherUnBoundClasses")
+    public TableDataInfo getTeacherUnBoundClasses(SchTeacher schTeacher) {
         startPage();
-        List<SchClass> list = schTeacherService.selectTeacherUnBoundClasses(teacherId);
+        List<SchClass> list = schTeacherService.selectTeacherUnBoundClasses(schTeacher);
         return getDataTable(list);
     }
 

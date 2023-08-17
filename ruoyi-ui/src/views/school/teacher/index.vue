@@ -74,7 +74,7 @@
     </el-dialog>
 
     <!-- 添加或修改教师管理对话框 -->
-    <el-dialog title="我的班级" :visible.sync="openClasses" width="800px">
+    <el-dialog title="我的班级" :visible.sync="openBoundClasses" width="800px">
 
       <el-row :gutter="10" class="mb8">
         <el-col :span="1.5">
@@ -85,7 +85,7 @@
             @click="handleClassDelete">批量移除</el-button>
         </el-col>
       </el-row>
-      <el-table v-loading="loadingClasses" :data="classesList" @selection-change="handleClassesSelectionChange">
+      <el-table v-loading="loadingBoundClasses" :data="classesBoundList" @selection-change="handleClassesSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="班级名称" align="center" prop="className" />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -94,18 +94,22 @@
           </template>
         </el-table-column>
       </el-table>
+      <pagination v-show="totalBound > 0" :total="totalBound" :page.sync="queryParamsBound.pageNum"
+        :limit.sync="queryParamsBound.pageSize" @pagination="getBoundClassList" />
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="openClasses = false">关 闭</el-button>
+        <el-button type="primary" @click="openBoundClasses = false">关 闭</el-button>
       </div>
-      <el-dialog width="500px" title="添加班级" :visible.sync="openAddClasses" append-to-body>
-        <el-table v-loading="loadingAddClasses" :data="classesAddList"
+      <el-dialog width="500px" title="添加班级" :visible.sync="openUnBoundClasses" append-to-body>
+        <el-table v-loading="loadingUnBoundClasses" :data="classesUnBoundList"
           @selection-change="handleAddClassesSelectionChange">
           <el-table-column type="selection" width="55" align="center" />
           <el-table-column label="班级名称" align="center" prop="className" />
         </el-table>
+        <pagination v-show="totalUnBound > 0" :total="totalUnBound" :page.sync="queryParamsUnBound.pageNum"
+          :limit.sync="queryParamsUnBound.pageSize" @pagination="getUnBoundClassList" />
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="handleTeacherAddClass">确 定</el-button>
-          <el-button @click="openAddClasses = false">取 消</el-button>
+          <el-button @click="openUnBoundClasses = false">取 消</el-button>
         </div>
       </el-dialog>
     </el-dialog>
@@ -113,7 +117,7 @@
 </template>
 
 <script>
-import { listTeacher, getTeacher, delTeacher, addTeacher, updateTeacher, getTeacherBoundClasses,getTeacherUnBoundClasses, delTeacherBoundClasses,addTeacherBoundClass} from "@/api/school/teacher";
+import { listTeacher, getTeacher, delTeacher, addTeacher, updateTeacher, getTeacherBoundClasses, getTeacherUnBoundClasses, delTeacherBoundClasses, addTeacherBoundClass } from "@/api/school/teacher";
 
 export default {
   name: "Teacher",
@@ -121,10 +125,10 @@ export default {
     return {
       // 遮罩层
       loading: true,
-      // 遮罩层（我的班级）
-      loadingClasses: true,
-      // 遮罩层（添加班级）
-      loadingAddClasses: true,
+      // 遮罩层（已绑定的班级）
+      loadingBoundClasses: true,
+      // 遮罩层（未绑定的班级）
+      loadingUnBoundClasses: true,
       // 选中数组
       ids: [],
       // 选中数组（我的班级）
@@ -141,26 +145,40 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
+      // 总条数（绑定的班级）
+      totalBound: 0,
+      // 总条数（未绑定的班级）
+      totalUnBound: 0,
       // 教师管理表格数据
       teacherList: [],
-      // 我的班级列表
-      classesList: [],
-      // 添加班级列表
-      classesAddList: [],
+      // 老师已经绑定的班级列表
+      classesBoundList: [],
+      // 老师未绑定的班级列表
+      classesUnBoundList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
-      //是否显示弹出层（我的班级）
-      openClasses: false,
-      //是否显示弹出层（添加班级）
-      openAddClasses: false,
+      //是否显示弹出层（已绑定的班级）
+      openBoundClasses: false,
+      //是否显示弹出层（未绑定的班级）
+      openUnBoundClasses: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         teacherName: null,
         teacherPhone: null,
+      },
+      // 查询参数（绑定的班级）
+      queryParamsBound: {
+        pageNum: 1,
+        pageSize: 10,
+      },
+      // 查询参数（未绑定的班级）
+      queryParamsUnBound: {
+        pageNum: 1,
+        pageSize: 10,
       },
       // 表单参数
       form: {},
@@ -179,14 +197,38 @@ export default {
   },
   methods: {
 
-    //我的班级
-    handleClasses(row) {
-      getTeacherBoundClasses(row.teacherId).then(response => {
-        this.teacherId = row.teacherId;
-        this.classesList = response.rows;
-        this.openClasses = true;
-        this.loadingClasses = false;
+    //查询老师已经绑定的班级
+    getBoundClassList() {
+      this.loadingBoundClasses = true;
+      getTeacherBoundClasses({
+        ...this.queryParamsBound,
+        teacherId: this.teacherId
+      }).then(response => {
+        this.classesBoundList = response.rows;
+        this.totalBound = response.total;
+        this.loadingBoundClasses = false;
       })
+    },
+
+    //查询老师未绑定的班级
+    getUnBoundClassList() {
+      this.loadingUnBoundClasses = true;
+      getTeacherUnBoundClasses({
+        ...this.queryParamsUnBound,
+        teacherId: this.teacherId
+      }).then(response => {
+        this.classesUnBoundList = response.rows;
+        this.totalUnBound = response.total;
+        this.loadingUnBoundClasses = false;
+      })
+    },
+
+    //我的班级（按钮）
+    handleClasses(row) {
+      this.teacherId = row.teacherId;
+      this.queryParamsBound.pageNum = 1;
+      this.openBoundClasses = true;
+      this.getBoundClassList();//查询老师已经绑定的班级
     },
 
     /** 查询教师管理列表 */
@@ -253,27 +295,21 @@ export default {
       this.title = "添加教师管理";
     },
 
-    /** 新增按钮操作（我的班级） */
+    /** 新增按钮操作（添加班级） */
     handleClassAdd() {
-      getTeacherUnBoundClasses(this.teacherId).then(response=>{
-        this.classesAddList = response.rows;
-        this.openAddClasses = true;
-        this.loadingAddClasses = false;
-      })
+      this.queryParamsUnBound.pageNum = 1;
+      this.openUnBoundClasses = true;
+      this.getUnBoundClassList();
     },
 
     /** 教师添加班级 */
-    handleTeacherAddClass(){
+    handleTeacherAddClass() {
       const classIds = this.cdids;
       const teacherId = this.teacherId
-      addTeacherBoundClass({classIds,teacherId}).then(()=>{
-        this.openAddClasses = false;
+      addTeacherBoundClass({ classIds, teacherId }).then(() => {
+        this.openUnBoundClasses = false;
         this.$modal.msgSuccess("添加成功");
-        this.loadingClasses = true;
-        getTeacherBoundClasses(teacherId).then(response => {
-        this.classesList = response.rows;
-        this.loadingClasses = false;
-      })
+        this.getBoundClassList()
       })
     },
 
@@ -325,11 +361,7 @@ export default {
       this.$modal.confirm('是否确认删除我的班级编号为"' + classIds + '"的数据项？').then(function () {
         return delTeacherBoundClasses({ classIds, teacherId });
       }).then(() => {
-        this.loadingClasses = true;
-        getTeacherBoundClasses(teacherId).then(response => {
-        this.classesList = response.rows;
-        this.loadingClasses = false;
-      })
+        this.getBoundClassList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => { });
     },
