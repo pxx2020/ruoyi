@@ -19,12 +19,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select teacher_id, teacher_name, teacher_phone, create_by, create_time, update_by, update_time, remark from sch_teacher
     </sql>
 
-<!--    <sql id="selectTeacherBoundClassesSql">-->
-<!--        SELECT c.class_id, c.class_name,tc.teacher_id-->
-<!--        FROM sch_class c-->
-<!--        LEFT JOIN sch_teacher_class tc ON c.class_id = tc.class_id AND tc.teacher_id = #{teacherId}-->
-<!--    </sql>-->
-
     <select id="selectSchTeacherList" parameterType="SchTeacher" resultMap="SchTeacherResult">
         <include refid="selectSchTeacherVo"/>
         <where>  
