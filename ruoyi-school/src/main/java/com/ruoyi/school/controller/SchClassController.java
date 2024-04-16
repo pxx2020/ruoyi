@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.school.domain.vo.SchClassVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @author ruoyi
  * @date 2023-08-14
  */
+@Slf4j
 @RestController
 @RequestMapping("/school/classes")
 public class SchClassController extends BaseController
@@ -44,6 +46,12 @@ public class SchClassController extends BaseController
     public TableDataInfo list(SchClass schClass)
     {
         startPage();
+        log.debug("log.debug-----查询学生班级列表");
+        log.info("log.info-----查询学生班级列表");
+        log.error("log.error-----查询学生班级列表");
+        log.warn("log.warn-----查询学生班级列表");
+        System.out.println("System.out.println-----查询学生班级列表");
+        System.err.println("System.err.println-----查询学生班级列表");
         List<SchClassVo> list = schClassService.selectSchClassList(schClass);
         return getDataTable(list);
     }

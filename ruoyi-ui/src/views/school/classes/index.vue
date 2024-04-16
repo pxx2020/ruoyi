@@ -3,21 +3,12 @@
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="年级" prop="gradeId">
         <el-select v-model="queryParams.gradeId" placeholder="请选择年级">
-            <el-option
-              v-for="item in gradesList"
-              :key="item.gradeId"
-              :label="item.gradeName"
-              :value="item.gradeId"
-            ></el-option>
-          </el-select>
+          <el-option v-for="item in gradesList" :key="item.gradeId" :label="item.gradeName"
+            :value="item.gradeId"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="班级名称" prop="className">
-        <el-input
-          v-model="queryParams.className"
-          placeholder="请输入班级名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.className" placeholder="请输入班级名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <!-- <el-form-item label="班级容量" prop="capacity">
         <el-input
@@ -35,46 +26,19 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['school:classes:add']"
-        >新增</el-button>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['school:classes:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['school:classes:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['school:classes:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['school:classes:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['school:classes:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
+          v-hasPermi="['school:classes:export']">导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -82,53 +46,34 @@
     <el-table v-loading="loading" :data="classesList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column label="班级ID" align="center" prop="classId" /> -->
-    
+
       <el-table-column label="班级名称" align="center" prop="className" />
       <el-table-column label="年级" align="center" prop="schGrades.gradeName" />
       <el-table-column label="班级容量" align="center" prop="capacity" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['school:classes:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['school:classes:remove']"
-          >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['school:classes:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['school:classes:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 添加或修改学生班级对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-       
+
         <el-form-item label="班级名称" prop="className">
           <el-input v-model="form.className" placeholder="请输入班级名称" />
         </el-form-item>
         <el-form-item label="所属年级" prop="gradeId">
           <el-select v-model="form.gradeId" placeholder="请选择所属年级">
-            <el-option
-              v-for="item in gradesList"
-              :key="item.gradeId"
-              :label="item.gradeName"
-              :value="item.gradeId"
-            ></el-option>
+            <el-option v-for="item in gradesList" :key="item.gradeId" :label="item.gradeName"
+              :value="item.gradeId"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="班级容量" prop="capacity">
@@ -168,7 +113,7 @@ export default {
       // 学生班级表格数据
       classesList: [],
       //年级列表
-      gradesList:[],
+      gradesList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -185,7 +130,7 @@ export default {
       form: {},
       // 表单校验
       rules: {
-       
+
         className: [
           { required: true, message: "班级名称不能为空", trigger: "blur" }
         ],
@@ -197,10 +142,12 @@ export default {
   },
   created() {
     this.getList();
-    listGrades({pageNum: 1,
-        pageSize: 999}).then(response => {
-        this.gradesList = response.rows;
-      });
+    listGrades({
+      pageNum: 1,
+      pageSize: 999
+    }).then(response => {
+      this.gradesList = response.rows;
+    });
   },
   methods: {
     /** 查询学生班级列表 */
@@ -245,7 +192,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.classId)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -287,12 +234,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const classIds = row.classId || this.ids;
-      this.$modal.confirm('是否确认删除学生班级编号为"' + classIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除学生班级编号为"' + classIds + '"的数据项？').then(function () {
         return delClasses(classIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => { });
     },
     /** 导出按钮操作 */
     handleExport() {
