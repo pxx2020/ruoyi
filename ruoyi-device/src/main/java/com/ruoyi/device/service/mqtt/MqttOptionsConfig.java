@@ -1,4 +1,4 @@
-package service.mqtt;
+package com.ruoyi.device.service.mqtt;
 
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.context.annotation.Bean;

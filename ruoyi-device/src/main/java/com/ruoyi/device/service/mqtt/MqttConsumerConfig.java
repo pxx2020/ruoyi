@@ -1,4 +1,4 @@
-package service.mqtt;
+package com.ruoyi.device.service.mqtt;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +15,11 @@ import org.springframework.messaging.MessageHandler;
 public class MqttConsumerConfig {
 
     private final MqttPahoClientFactory mqttClientFactory;
+    private final MqttConsumer mqttConsumer;
 
-    public MqttConsumerConfig(MqttPahoClientFactory mqttClientFactory) {
+    public MqttConsumerConfig(MqttPahoClientFactory mqttClientFactory, MqttConsumer mqttConsumer) {
         this.mqttClientFactory = mqttClientFactory;
+        this.mqttConsumer = mqttConsumer;
     }
 
     @Bean
@@ -28,7 +30,7 @@ public class MqttConsumerConfig {
     @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(
-                "mqtt-consumer", mqttClientFactory, "#");  // 订阅所有主题
+                "mqtt-consumer", mqttClientFactory, "XMill/#");  // 订阅所有主题
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);
@@ -39,10 +41,7 @@ public class MqttConsumerConfig {
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public MessageHandler handler() {
-        return message -> {
-            String payload = message.getPayload().toString();
-            System.out.println("接收到消息: " + payload);
-            // 在这里处理你的消息
-        };
+        // 通过注入的 MqttMessageHandlerService 作为消息处理器
+        return mqttConsumer;
     }
 }

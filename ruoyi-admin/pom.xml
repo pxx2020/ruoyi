@@ -68,6 +68,12 @@
             <artifactId>ruoyi-school</artifactId>
         </dependency>
 
+        <!-- 设备模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-device</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

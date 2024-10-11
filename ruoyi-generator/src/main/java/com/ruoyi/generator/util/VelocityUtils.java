@@ -185,13 +185,13 @@ public class VelocityUtils
         {
             fileName = StringUtils.format("{}/mapper/{}Mapper.java", javaPath, className);
         }
-        else if (template.contains("service.java.vm"))
+        else if (template.contains("com.ruoyi.device.com.ruoyi.device.service.java.vm"))
         {
-            fileName = StringUtils.format("{}/service/I{}Service.java", javaPath, className);
+            fileName = StringUtils.format("{}/com.ruoyi.device.com.ruoyi.device.service/I{}Service.java", javaPath, className);
         }
         else if (template.contains("serviceImpl.java.vm"))
         {
-            fileName = StringUtils.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
+            fileName = StringUtils.format("{}/com.ruoyi.device.com.ruoyi.device.service/impl/{}ServiceImpl.java", javaPath, className);
         }
         else if (template.contains("controller.java.vm"))
         {

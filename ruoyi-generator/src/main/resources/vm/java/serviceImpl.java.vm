@@ -1,4 +1,4 @@
-package ${packageName}.service.impl;
+package ${packageName}.com.ruoyi.device.com.ruoyi.device.service.impl;
 
 import java.util.List;
 #foreach ($column in $columns)
@@ -17,7 +17,7 @@ import ${packageName}.domain.${subClassName};
 #end
 import ${packageName}.mapper.${ClassName}Mapper;
 import ${packageName}.domain.${ClassName};
-import ${packageName}.service.I${ClassName}Service;
+import ${packageName}.com.ruoyi.device.com.ruoyi.device.service.I${ClassName}Service;
 
 /**
  * ${functionName}Service业务层处理

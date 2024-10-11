@@ -8,11 +8,11 @@ import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 
 @Configuration
-public class MqttConsumer {
+public class MqttClientFactoryConfig {
 
     private final MqttConnectOptions mqttConnectOptions;
 
-    public MqttConsumer(MqttConnectOptions mqttConnectOptions) {
+    public MqttClientFactoryConfig(MqttConnectOptions mqttConnectOptions) {
         this.mqttConnectOptions = mqttConnectOptions;
     }
 
